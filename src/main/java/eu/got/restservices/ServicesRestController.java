@@ -33,6 +33,7 @@ public class ServicesRestController {
 		return "Spring in Action";
 	}
 
+	/*
 	@RequestMapping(value = "/download", produces = APPLICATION_PDF)
 	public @ResponseBody Resource download(HttpServletResponse response) throws IOException {
 		logger.info("Inside ServicesRestController download");
@@ -56,6 +57,25 @@ public class ServicesRestController {
 		//response.setHeader("Content-Length", String.valueOf(pdfFile.contentLength()));
 		return pdfFile;
 	}
+	*/
+		
+		
+	// Exposing the "produces" attribute in @RequestMapping sets the content-type chosen for the response.
+	// We have no message converter that knows how to serialize an ErrorDetail instance into "application/pdf"
+	// setting the content type on the response entity itself allows regular content-negotiation in the error handler
+	  @RequestMapping(value = "/download")
+		public ResponseEntity<Resource> download() throws IOException {
+			ClassPathResource pdfFile = new ClassPathResource("guid.pdf");
+			return ResponseEntity.ok()
+					.header("Content-Disposition", "attachment")
+					.header("filename", "guide.pdf")
+					.contentType(MediaType.APPLICATION_PDF)
+					.body(pdfFile);
+		}
+
+	// Note: injecting and using the Servlet response is usually a bad idea and can lead to strange situations.
+	// Being involved as little as possible with the Servlet API is often a good idea!
+
 	
 	 @RequestMapping(value = "/docs1", method = RequestMethod.GET, produces = "application/pdf")
 	    public ResponseEntity<byte[]> getDocs(@RequestParam("error") boolean error) throws IOException {
