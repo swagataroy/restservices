@@ -41,11 +41,11 @@ public class ServicesRestController {
 		// File file = getFile();
 		ClassPathResource pdfFile = new ClassPathResource("guid.pdf");
 
-		/*if (pdfFile == null) {
+		if (pdfFile == null) {
 			System.out.println("Swagata");
 		} else {
 			System.out.println("Swagata 2222");
-		}*/
+		}
 		
 		response.setContentType(APPLICATION_PDF);
 		response.setContentLength((int) pdfFile.contentLength());
